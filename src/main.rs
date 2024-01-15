@@ -12,7 +12,10 @@ fn interate_guess(secret_num: &u32) {
             .read_line(&mut guess)
             .expect("Failed to read the guess");
 
-        let guess: u32 = guess.trim().parse().expect("Please type a number!");
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
 
         println!("You guessed {} and..", &guess);
 
@@ -41,7 +44,10 @@ fn iterate_range_limit() -> u32 {
             .read_line(&mut range_limit)
             .expect("Failed to read the range limit");
 
-        let range_limit: u32 = range_limit.trim().parse().expect("Please type a number!");
+        let range_limit: u32 = match range_limit.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
 
         if range_limit > 1 {
             println!("The range is from 1 to {} inclusive", &range_limit);
