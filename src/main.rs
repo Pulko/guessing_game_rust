@@ -2,7 +2,7 @@ use rand::{thread_rng, Rng};
 use std::cmp::Ordering;
 use std::io;
 
-fn interate_guess(secret_num: &u32) {
+fn interate_guess(secret_num: &u32, range_limit: &u32) {
     loop {
         println!("Please input your guess:");
 
@@ -14,14 +14,22 @@ fn interate_guess(secret_num: &u32) {
 
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
-            Err(_) => continue,
+            Err(_) => {
+                println!("The guess is not a number!");
+                continue;
+            }
         };
 
-        println!("You guessed {} and..", &guess);
+        if guess < 1 || guess > *range_limit {
+            println!("The guess is out of range!");
+            continue;
+        }
+
+        let format_str = format!("You guessed {} and ", &guess);
 
         match guess.cmp(&secret_num) {
-            Ordering::Greater => println!("...your guess is greater"),
-            Ordering::Less => println!("...your guess is less"),
+            Ordering::Greater => println!("{} your guess is greater", format_str),
+            Ordering::Less => println!("{} your guess is less", format_str),
             Ordering::Equal => {
                 println!("It is right!");
                 break;
@@ -64,7 +72,5 @@ fn main() {
 
     let range_limit = iterate_range_limit();
     let secret_num = get_secret_number(range_limit);
-    // println!("The secret number is {secret_num}");
-
-    interate_guess(&secret_num);
+    interate_guess(&secret_num, &range_limit);
 }
